@@ -17,9 +17,13 @@
         - [ ] RedBlackTree
         - [ ] B+Tree
         - [ ] AvlTree
-
-
-
+        - [ ] Trie
+            - [ ] Prefix[array/list]
+            - [ ] DoubleArrayTrie
+            - [ ] Suffix
+            - [ ] PatriciaTrie
+            - [ ] CritBitTrie
+        - [ ] lsm-tree
 
 #### 版权
 
