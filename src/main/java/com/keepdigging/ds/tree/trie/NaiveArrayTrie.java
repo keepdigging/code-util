@@ -12,10 +12,6 @@ public class NaiveArrayTrie {
     ////////////////////API接口//////////////////////
     public void create(List<String> wordList)
     {
-        if(root != null)
-        {
-            throw new IllegalStateException("trie exists.");
-        }
         if(wordList == null || wordList.isEmpty())
         {
             throw new IllegalArgumentException("illegal argument.");
@@ -52,8 +48,6 @@ public class NaiveArrayTrie {
     {
         checkValidate(prefix);
 
-        Set<String> prefixSet = new HashSet<String>();
-
         Node tmp;
 
         tmp = root;
@@ -66,14 +60,33 @@ public class NaiveArrayTrie {
             }
             tmp = tmp.children[idx];
         }
-        if(tmp.isLeaf)
+        if(tmp == null || tmp.isLeaf)
         {
             return null;
         }
 
-        //TODO traverse(tmp, prefixSet);
+        traverse(tmp, prefix);
 
         return prefixSet;
+    }
+
+    private void traverse(Node node, String prefix)
+    {
+        if(node == null)
+        {
+            return;
+        }
+        if(node.isLeaf)
+        {
+            prefixSet.add(prefix + node.value);
+        }
+        else
+        {
+            for (int j = 0; j<node.children.length; j++)
+            {
+                traverse(node.children[j], prefix + node.value);
+            }
+        }
     }
 
     /**
@@ -99,10 +112,6 @@ public class NaiveArrayTrie {
 
     private void checkValidate(String word)
     {
-        if(root == null)
-        {
-            throw new IllegalStateException("no trie exists.");
-        }
         if(word == null || word.length() == 0)
         {
             throw new IllegalArgumentException("illegal argument.");
@@ -112,14 +121,15 @@ public class NaiveArrayTrie {
     ////////////////////////内部实现/////////////////////////////
 
     private static final int MAX_SIZE = 26;
-    private Node root = null;
+    private Node root = new Node();
+    private Set<String> prefixSet = new HashSet<String>();
 
     private static class Node
     {
         private char value;
         private int num;
         private boolean isLeaf;
-        private Node[] children;
+        private Node[] children = new Node[MAX_SIZE];
 
         Node(char value)
         {
@@ -127,5 +137,7 @@ public class NaiveArrayTrie {
             this.num = 1;
             this.isLeaf = false;
         }
+
+        Node() {}
     }
 }
